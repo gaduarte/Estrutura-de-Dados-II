@@ -11,7 +11,7 @@ typedef struct arv{
     struct arv* dir;
 } *Arv;
 
-Arv arv_cria(Arv e, Item x, Arv d){
+Arv arv_cria(Item x, Arv e, Arv d){
         Arv n = (Arv)malloc(sizeof(struct arv));
         n->esq = e;
         n->item = x;
@@ -38,9 +38,9 @@ void arv_imprime(Arv a){
 }
 
 int main(){
-    Arv arv2 = arv_vazia();
-    arv2 = arv_cria(arv2,2,arv_vazia());
-    arv2 = arv_cria(arv2,1,arv_cria(arv2,3,arv_vazia()));
-    arv2 = arv_cria(arv2,4,arv_vazia());
+    Arv a1 = arv_cria(4,arv_vazia(),arv_vazia());
+    Arv a2 = arv_cria(2,arv_vazia(),a1);
+    Arv a3 = arv_cria(3,arv_vazia(),arv_vazia());
+    Arv a4 = arv_cria(1,a2,a3);
     arv_imprime(arv2);
 }
