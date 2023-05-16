@@ -73,3 +73,5 @@ void ThreadedBST<T>::MorrisPreorder(){
 
 
 #endif // THREADED_TREE
+
+// Com uso do percurso Morris não é necesário recursão, ele é responsável por transformar a árvore de modo que o nó que está sendo processado não tenha filho à esquerda;
