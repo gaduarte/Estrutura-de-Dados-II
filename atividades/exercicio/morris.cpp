@@ -28,7 +28,7 @@ public:
         root = 0;
     }
     void insert(const T&);
-    void MorrisInorder();
+    void MorrisPreorder();
     // ...................
 protected:
     BSTNode<T>* root;
@@ -36,30 +36,30 @@ protected:
 };
 
 template<class T>
-void ThreadedBST<T>::MorrisInorder(){
-    BSTNode<T> *p = root, *tmp;
-    while(p != 0)
-        if(p->left == 0){
+void ThreadedBST<T>::MorrisPreorder(){
+    BSTNode<T> *p=root, *tmp;
+    while (p!=0){
+        if (p->left==0){
             visit(p);
-            p = p->right;
-    }
+            p=p->right;
+        }
         else{
             tmp = p->left;
-            while(tmp->right != 0 &&
-                  tmp->right != p)
-                    tmp = tmp->right;
-            if(tmp->right == 0){
-                tmp->right = p;
-                p = p->left;
-            }
-            else{
-                visit(p);
-                tmp->right = 0;
-                p = p->right;
-            }
-    }
+            while (tmp->right!= 0 && tmp->right!=p)
+                tmp=tmp->right;
+                if (tmp->right== p){
+                    tmp->right= nullptr;
+                    p = p->right;
+                }
+                else{
+                    visit(p);
+                    tmp->right = p;
+                    p = p->left;
+                }
+                }
+        }
 }
 
 #endif // BST
 
-// Com uso do percurso Morris não é necesário recursão, pois transforma a árvore de modo que o nó que está sendo processado não tenha filho à esquerda;
+// A forma correta de implementar o percurso Morris no formato preorder.
