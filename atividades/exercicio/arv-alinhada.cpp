@@ -1,4 +1,5 @@
 #include <iostream>
+
 #ifndef THREADED_TREE
 #define THREADED_TREE
 
@@ -20,64 +21,55 @@ public:
     unsigned int sucessor : 1;
 };
 
-
 template<class T>
-class ThreadedTree {
-public:
-    ThreadedTree() {
-        root = 0;
-    }
-    void insert(const T&);
-    void inorder();
-    void preorder();
-    // ...................
-protected:
-    ThreadedNode<T>* root;
-    // ....................
-};
-
-template<class T>
-void ThreadedTree<T>::inorder(){
-    ThreadedNode<T> *prev, *p = root;
-    if(p != 0){
-        while (p->left != 0)
-            p = p->left;
-        while (p != 0){
+void BST<T>::MorrisInorder(){
+    BSTNode<T> *p = root, *tmp;
+    while(p != 0)
+        if(p->left == 0){
             visit(p);
-            prev = p;
-            p =p->right;
-            if(p != 0 && prev->sucessor == 0)
-                while(p->left != 0)
-                    p = p->left;
-
-        }
+            p = p->right;
     }
-}
-
-
-template<class T>
-void ThreadedTree<T>::preorder(){
-    ThreadedNode<T> *p = root;
-
-    while (p != 0){
-            visit(p);
-            if(p->left != 0){
+        else{
+            tmp = p->left;
+            while(tmp->right != 0 &&
+                  tmp->right != p)
+                    tmp = tmp->right;
+            if(tmp->right == 0){
+                tmp->right = p;
                 p = p->left;
-            } else if(p->right != 0 && !p->sucessor){
-                p = p->right;
-            } else {
-                while(p->right != 0 && p->sucessor){
-                    p = p->right;
-                }
-                if(p->right != 0){
-                    p = p->right;
-                } else {
-                    break;
-                }
             }
-
+            else{
+                visit(p);
+                tmp->right = 0;
+                p = p->right;
+            }
     }
-
 }
+
+template<class T>
+void ThreadedBST<T>::MorrisPreorder(){
+    BSTNode<T> *p=root, *tmp;
+    while (p!=0){
+        if (p->left==0){
+            visit(p);
+            p=p->right;
+        }
+        else{
+            tmp = p->left;
+            while (tmp->right!= 0 && tmp->right!=p)
+                tmp=tmp->right;
+                if (tmp->right== p){
+                    tmp->right= nullptr;
+                    p = p->right;
+                }
+                else{
+                    visit(p);
+                    tmp->right = p;
+                    p = p->left;
+                }
+                }
+        }
+}
+
 
 #endif // THREADED_TREE
