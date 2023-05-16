@@ -62,4 +62,4 @@ void ThreadedBST<T>::MorrisPreorder(){
 
 #endif // BST
 
-// A forma correta de implementar o percurso Morris no formato preorder.
+// A forma correta de implementar o percurso Morris no formato preorder. O erro do código passado para ser ananlisado só tinha um pequeno erro no direcionamento.
