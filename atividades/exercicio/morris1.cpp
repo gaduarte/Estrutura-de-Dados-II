@@ -58,14 +58,14 @@ void ThreadedBST<T>::MorrisPreorder(){
             tmp = p->left;
             while (tmp->right!= 0 && tmp->right!=p)
                 tmp=tmp->right;
-                if (tmp->right== p){
+                if (tmp->right== NULL){
+                    visit(p);
                     tmp->right= nullptr;
-                    p = p->right;
+                    p = p->left;
                 }
                 else{
-                    visit(p);
-                    tmp->right = p;
-                    p = p->left;
+                    tmp->right = NULL;
+                    p = p->right;
                 }
                 }
         }
