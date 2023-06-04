@@ -8,7 +8,7 @@
                                           \
                                             63
 1.3 - A árvore não está balanceada.
-1.6 - As árvores ficam balnceadas, porém de maneira diferentes.
+1.6 - As árvores ficam balnceadas, porém de maneiras diferentes.
 */
 
 //1.4
