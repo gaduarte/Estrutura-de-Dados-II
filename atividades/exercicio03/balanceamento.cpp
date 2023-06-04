@@ -8,13 +8,14 @@
                                           \
                                             63
 1.3 - A árvore não está balanceada.
-1.6
+1.6 - As árvores ficam balnceadas, porém de maneira diferentes.
 */
 
 //1.4
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <algorithm>
 #ifndef THREADED_TREE
 #define THREADED_TREE
 
@@ -49,15 +50,16 @@ public:
     void preorder();
     void BubbleSort(T* vetor, int tamanho);
     void balancear(T vetor[], int first, int last);
-    
+    void createBackbone();
+    void createPerfectTree();
+    void createPerfectTreeRecursive(ThreadedNode<T>*& node, int height, int nodesInLastLevel);
 
     // ...................
 private:
     ThreadedNode<T>* root;
-  
-    void rotateLeft(ThreadedNode<T>* node);
-    void rotateRight(ThreadedNode<T>* node);
-    
+
+    void rotateLeft();
+    void rotateRight();
 
     // ....................
 
@@ -164,13 +166,13 @@ void ThreadedTree<T>::preorder(){
 
 template<class T>
 void ThreadedTree<T>::rotateLeft() {
-    ThreadedNode<T>* temp = p;
+    ThreadedNode<T>* temp = root;
     ThreadedNode<T>* par = temp->left;
     ThreadedNode<T>* prox = par->right;
     ThreadedNode<T>* subD;
-    par = tmp->left;
+    par = temp->left;
 
-    tmp->left = prox;
+    temp->left = prox;
     subD = prox->left;
     par->right = subD;
     prox->left = par;
@@ -178,13 +180,13 @@ void ThreadedTree<T>::rotateLeft() {
 
 template<class T>
 void ThreadedTree<T>::rotateRight() {
-    ThreadedNode<T>* temp = p;
+    ThreadedNode<T>* temp = root;
     ThreadedNode<T>* par = temp->right;
     ThreadedNode<T>* prox = par->left;
     ThreadedNode<T>* subD;
-    par = tmp->right;
+    par = temp->right;
 
-    tmp->right = prox;
+    temp->right = prox;
     subD = prox->right;
     par->left = subD;
     prox->right = par;
@@ -219,6 +221,66 @@ void ThreadedTree<T>::BubbleSort(T vetor[], int tamanho) {
     }
 }
 
+template<class T>
+void ThreadedTree<T>::createBackbone() {
+    ThreadedNode<T>* current = root;
+    ThreadedNode<T>* prev = nullptr;
+
+    while (current != nullptr) {
+        if (current->left != nullptr) {
+           
+            rotateRight(current);
+        }
+
+        if (prev != nullptr) {
+            prev->right = current;
+            prev->sucessor = true;
+        }
+
+        prev = current;
+        current = current->right;
+    }
+}
+
+template<class T>
+void ThreadedTree<T>::createPerfectTree() {
+    int nodeCount = 0;
+    ThreadedNode<T>* current = root;
+
+
+    while (current != nullptr) {
+        nodeCount++;
+        current = current->right;
+    }
+
+    int height = static_cast<int>(log2(nodeCount + 1));
+    int nodesInLastLevel = nodeCount - (pow(2, height) - 1);
+
+    current = root;
+    createPerfectTreeRecursive(current, height, nodesInLastLevel);
+}
+
+template<class T>
+void ThreadedTree<T>::createPerfectTreeRecursive(ThreadedNode<T>*& node, int height, int nodesInLastLevel) {
+    if (height > 1) {
+        int nodesInSubtree = pow(2, height - 1);
+        int nodesInRightSubtree = (nodesInSubtree - 1) / 2 + ((nodesInSubtree / 2 < nodesInLastLevel) ? (nodesInSubtree / 2) : nodesInLastLevel);
+
+        ThreadedNode<T>* current = node;
+        for (int i = 0; i < nodesInRightSubtree; i++) {
+            current = current->right;
+        }
+
+        rotateLeft(current);
+
+        createPerfectTreeRecursive(node->left, height - 1, nodesInLastLevel - nodesInRightSubtree);
+        createPerfectTreeRecursive(node->right, height - 1, nodesInRightSubtree - 1);
+    }
+}
+
+
+
+
 #endif // THREADED_TREE
 
 int main() {
@@ -237,10 +299,11 @@ int main() {
     tree->preorder();
     std::cout << std::endl;
 
-    tree->balancear();
+    int size = 6;  // tamanho do vetor
+    int* vetor = new int[size] {7, 6, 22, 14, 40, 63};
+    tree->balancear(vetor, 0, size - 1);
 
-    tree->inorder();
-    std::cout << std::endl;
 
     return 0;
 }
+
