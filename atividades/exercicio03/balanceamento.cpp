@@ -48,7 +48,7 @@ public:
     void inorder();
     void preorder();
     void BubbleSort(T* vetor, int tamanho);
-    void balancear();
+    void balancear(T vetor[], int first, int last);
     
 
     // ...................
