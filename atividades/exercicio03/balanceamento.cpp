@@ -224,15 +224,15 @@ void ThreadedTree<T>::BubbleSort(T vetor[], int tamanho) {
 template<class T>
 void ThreadedTree<T>::createBackbone() {
     ThreadedNode<T>* current = root;
-    ThreadedNode<T>* prev = nullptr;
+    ThreadedNode<T>* prev = 0;
 
-    while (current != nullptr) {
-        if (current->left != nullptr) {
+    while (current != 0) {
+        if (current->left != 0) {
            
             rotateRight(current);
         }
 
-        if (prev != nullptr) {
+        if (prev != 0) {
             prev->right = current;
             prev->sucessor = true;
         }
