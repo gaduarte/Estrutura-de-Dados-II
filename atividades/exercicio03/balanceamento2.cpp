@@ -107,57 +107,57 @@ class Arvore {
 		}
 
 
-     void rotateLeft() {
-           ArvoreNo<T> temp = root;
-           ArvoreNo<T> par = temp->left;
-           ArvoreNo<T> prox = par->right;
-           ArvoreNo<T> subD;
-            par = temp->left;
+     		void rotateLeft() {
+		   ArvoreNo<T> temp = root;
+		   ArvoreNo<T> par = temp->left;
+		   ArvoreNo<T> prox = par->right;
+		   ArvoreNo<T> subD;
+		    par = temp->left;
 
-            temp->left = prox;
-            subD = prox->left;
-            par->right = subD;
-            prox->left = par;
+		    temp->left = prox;
+		    subD = prox->left;
+		    par->right = subD;
+		    prox->left = par;
         }
 
 
-      void rotateRight() {
-            ArvoreNo<T> temp = root;
-            ArvoreNo<T> par = temp->right;
-            ArvoreNo<T> prox = par->left;
-            ArvoreNo<T> subD;
-            par = temp->right;
+      		void rotateRight() {
+		    ArvoreNo<T> temp = root;
+		    ArvoreNo<T> par = temp->right;
+		    ArvoreNo<T> prox = par->left;
+		    ArvoreNo<T> subD;
+		    par = temp->right;
 
-            temp->right = prox;
-            subD = prox->right;
-            par->left = subD;
-            prox->right = par;
+		    temp->right = prox;
+		    subD = prox->right;
+		    par->left = subD;
+		    prox->right = par;
         }
 
 		   void backbone(ArvoreNo<T> *p) {
-          ArvoreNo<T> *curr = p;
-          ArvoreNo<T> *prev = nullptr;
-          ArvoreNo<T> *tmp = nullptr;
+			  ArvoreNo<T> *curr = p;
+			  ArvoreNo<T> *prev = nullptr;
+			  ArvoreNo<T> *tmp = nullptr;
 
-          while (curr != nullptr) {
-              if (curr->left != nullptr) {
-                  tmp = curr->left;
-                  curr->left = tmp->right;
-                  tmp->right = curr;
-                  curr = tmp;
+			  while (curr != nullptr) {
+			      if (curr->left != nullptr) {
+				  tmp = curr->left;
+				  curr->left = tmp->right;
+				  tmp->right = curr;
+				  curr = tmp;
 
-              } else {
-                  curr = curr->right;
-              }
+			      } else {
+				  curr = curr->right;
+			      }
 
-              if (prev != nullptr) {
-                  prev->right = curr;
-              } else {
-                  p = curr;
-              }
+			      if (prev != nullptr) {
+				  prev->right = curr;
+			      } else {
+				  p = curr;
+			      }
 
-              prev = curr;
-          }
+			      prev = curr;
+			  }
 }
 
 
